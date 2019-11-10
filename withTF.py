@@ -3,7 +3,6 @@ import tensorflow as tf
 import matplotlib.pyplot as plt 
 import time
 
-
 batch_size = 8
 classnum = 2
 # 使用numpy生成200个随机点
