@@ -51,7 +51,7 @@ prediction = tf.nn.softmax(Wx_plus_b_L2)
 # loss = tf.reduce_mean(tf.square(y-prediction))
 # print(type(loss))
 # exit()
-loss = tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=Wx_plus_b_L2)
+loss = tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=prediction)
 
 # 使用梯度下降法
 # train_step = tf.train.AdamOptimizer(0.01).minimize(loss)
@@ -70,13 +70,15 @@ with tf.Session() as sess:
         #     batchx = 
         fetch_dict = {
             'train': train_step,
-            'loss': loss
+            'loss': loss,
+            'predict': prediction
         }
         
         x_test = np.expand_dims(x_data[randid], axis=0)
         # y_test = np.expand_dims(y_label[randid], axis=0)
         result = sess.run(fetch_dict, feed_dict={x:x_test, y:y_vector[randid][np.newaxis,:]})
         print('loss:{}'.format(result['loss']))
+        print('predict:{}'.format(result['predict']))
         # time.sleep(0.5)
 
     # # 获取预测值
