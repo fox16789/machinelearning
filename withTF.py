@@ -10,7 +10,7 @@ classnum = 2
 # x_data = np.linspace(-0.5,0.5,200)[:,np.newaxis]
 # noise = np.random.normal(0,0.02,x_data.shape)
 # y_data = np.square(x_data) + noise
-x_data = np.loadtxt('D:\\Python\\machinelearning\\data\\exam_x.txt') # data
+x_data = np.loadtxt('./data\\exam_x.txt') # data
 # x_data = np.loadtxt('D:\\Python\\machinelearning\\data\\iris_x.txt') # data
 x_list = []
 y_list = []
@@ -20,7 +20,7 @@ y_list = []
 x_x = np.expand_dims(x_data[5], axis=0)
 print(x_x.shape)
 # exit()
-y_label = np.loadtxt('D:\\Python\\machinelearning\\data\\exam_y.txt', dtype=int) # label
+y_label = np.loadtxt('./data/exam_y.txt', dtype=int) # label
 # y_label = np.loadtxt('D:\\Python\\machinelearning\\data\\iris_y.txt') # label
 print(y_label[5])
 y_vector = np.zeros([y_label.shape[0], classnum])
