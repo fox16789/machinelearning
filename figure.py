@@ -25,3 +25,12 @@ def figure(x, y, predict):
     plt.ylim(y_min, y_max)
     plt.title('classfication')
     plt.show()
+
+
+
+def fig(x, y):
+    # # 画图
+    plt.figure()
+    plt.scatter(x,y)
+    # # plt.plot(x_data,prediction_value,'r-', lw=5)
+    plt.show()
