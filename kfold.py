@@ -1,8 +1,8 @@
 import numpy as np 
-from sklearn.model_selection import KFold
 
 
-def Kfold(num):
+
+def Kfold(x, y, num):
     '''
         num: the num of K-Fold
         pathx: the path of x
@@ -11,14 +11,13 @@ def Kfold(num):
         return: a list of train and test
 
     '''
-    x_data = np.loadtxt('./data/exam_x.txt') # data
-    y_label = np.loadtxt('./data/exam_y.txt', dtype=int) # label
-    KF = KFold(n_splits=num)
-    for train, test in KF.split(x_data):
-        print(test)
-
-    x = 1
-
-
-if __name__ == "__main__":
-    Kfold(5)
+    x_data = x # data
+    y_label = y # label
+    assert type(x_data) == type(np.zeros([1,1]))
+    alldata = np.concatenate([x, y], axis=1)
+    size = alldata.shape[0] // num
+    train = []
+    test = []
+    
+    for i in range(num):
+        

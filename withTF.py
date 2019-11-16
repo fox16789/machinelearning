@@ -44,8 +44,9 @@ datasize = x_data.shape[0]
 #     y_list.append(y_label[i * batch_size : (i+1) * batch_size, ])
 # 定义两个placeholder
 x = tf.placeholder(tf.float32,[None, 2])
-y = tf.placeholder(tf.float32,[None, 1])
+y = tf.placeholder(tf.float32,[None,])
 
+one_hot_y = tf.one_hot(tf.cast(y, tf.int32), depth=classnum)
 # 定义神经网络中间层
 Weight_L1 = tf.Variable(tf.random.normal([2,20]))
 # Weight_L1 = tf.Variable(tf.zeros([2,10]))
@@ -55,22 +56,22 @@ L1 = tf.nn.sigmoid(Wx_plus_b_L1)
 
 # 定义神经网络输出层
 # Weight_L2 = tf.Variable(tf.random.normal([10,2]))
-Weight_L2 = tf.Variable(tf.zeros([20,2]))
-biases_L2 = tf.Variable(tf.zeros([1,1]))
+Weight_L2 = tf.Variable(tf.zeros([20,classnum]))
+biases_L2 = tf.Variable(tf.zeros([1,classnum]))
 Wx_plus_b_L2 = tf.matmul(L1,Weight_L2) + biases_L2
 prediction = tf.nn.sigmoid(Wx_plus_b_L2)
 
 # 二次代价函数
-loss = tf.reduce_mean(tf.square(y-prediction))
+# loss = tf.reduce_mean(tf.square(y-prediction))
 
-# loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y,logits=prediction))
+loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=one_hot_y,logits=prediction))
 
 # 使用梯度下降法
 # train_step = tf.train.AdamOptimizer(0.01).minimize(loss)
 train_step = tf.train.GradientDescentOptimizer(0.001).minimize(loss)
 
 # 计算准确率
-correct_prediction = tf.equal(tf.argmax(y,1),tf.argmax(prediction,1))
+correct_prediction = tf.equal(tf.argmax(one_hot_y, 1),tf.argmax(prediction, 1))
 accurary = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
 
 
@@ -91,7 +92,7 @@ with tf.Session() as sess:
         
         # x_test = np.expand_dims(x_data[randid], axis=0)
         # y_test = np.expand_dims(y_label[randid], axis=0)
-        result = sess.run(fetch_dict, feed_dict={x:x_data[start:end], y:y_label[start:end][:,np.newaxis]})
+        result = sess.run(fetch_dict, feed_dict={x:x_data[start:end], y:y_label[start:end]})
         print('itr:{} loss:{}'.format(i, result['loss']))
         # print('Weight_L1:', sess.run(Weight_L1), 'biases_L1:', sess.run(biases_L1))
         # print('itr:{} accurary:{}'.format(i, result['accurary']))
