@@ -5,9 +5,6 @@ import figure
 # import time
 import dataprocess
 
-batch_size = 8
-classnum = 2
-
 def tfnn(x_data, y_label, batch_size, classnum, hiddennode, itr, learning_rate, activate_fun):
 
 
@@ -41,8 +38,8 @@ def tfnn(x_data, y_label, batch_size, classnum, hiddennode, itr, learning_rate, 
     # loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=one_hot_y,logits=prediction))
 
     # 使用梯度下降法
-    # train_step = tf.train.AdamOptimizer(0.01).minimize(loss)
-    train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
+    train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)
+    # train_step = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 
     # 计算准确率
     # correct_prediction = tf.equal(tf.argmax(one_hot_y, 1),tf.argmax(prediction, 1))
@@ -74,8 +71,6 @@ def tfnn(x_data, y_label, batch_size, classnum, hiddennode, itr, learning_rate, 
                     # 'accurary': accurary
                 }
                 
-                # x_test = np.expand_dims(x_data[randid], axis=0)
-                # y_test = np.expand_dims(y_label[randid], axis=0)
                 result = sess.run(fetch_dict, feed_dict={x:npx, y:npy})
             print('itr:{} loss:{}'.format(i, result['loss']))
             w1list.append(result['w1'])
@@ -83,9 +78,7 @@ def tfnn(x_data, y_label, batch_size, classnum, hiddennode, itr, learning_rate, 
             w2list.append(result['w2'])
             b2list.append(result['b2'])
             losslist.append(result['loss'])
-            # print('Weight_L1:', sess.run(Weight_L1), 'biases_L1:', sess.run(biases_L1))
-            # print('itr:{} accurary:{}'.format(i, result['accurary']))
-            # time.sleep(0.5)
+
         parameters['w1'] = w1list
         parameters['b1'] = b1list
         parameters['w2'] = w2list
@@ -126,17 +119,19 @@ def predict(x, num, parameters, activate_fun):
 
 
 if __name__ == "__main__":
+    
     # x_data = np.loadtxt('./data/exam_x.txt') # data
-    x_data = np.loadtxt('./data/iris_x.txt') # data
     # y_label = np.loadtxt('./data/exam_y.txt', dtype=int) # label
+
+    x_data = np.loadtxt('./data/iris_x.txt') # data
     y_label = np.loadtxt('./data/iris_y.txt', dtype=int) # label
 
     batch_size = 10
-    classnum = 3
+    classnum = 2
     hiddennode = 10
     itr = 1000
     learning_rate = 0.05
-    activate_fun=tf.nn.softmax
+    activate_fun=tf.nn.sigmoid
 
     parameters = tfnn(x_data, y_label, batch_size, classnum, hiddennode, itr, learning_rate, activate_fun=activate_fun)
     figure.figurefortf(x_data, y_label, predict=predict, parameters=parameters, acfun=activate_fun)

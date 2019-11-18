@@ -24,7 +24,7 @@ def figure(x, y, predict, loss):
         predict_value = predict(predict_x, i)
         predict_value = np.reshape(predict_value, xaxis.shape)
         plt.contourf(xaxis, yaxis, predict_value, cmap=plt.cm.RdYlBu)
-        plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.RdYlBu, marker=(9,3,10))
+        plt.scatter(x[:, 0], x[:, 1], c=y, cmap=plt.cm.RdYlBu)
 
         plt.subplot(122)
         plt.title('loss')
@@ -71,7 +71,7 @@ def figurefortf(x, y, predict, parameters, acfun):
         plt.ylabel('loss')
         plt.plot(i, loss[i], c='r', ls='-', marker='.')
         # plt.draw()
-        plt.pause(0.1)
+        plt.pause(0.01)
         # time.sleep(0.01)
     plt.pause(30)
     plt.close()
